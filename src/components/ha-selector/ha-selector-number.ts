@@ -66,6 +66,12 @@ export class HaNumberSelector extends LitElement {
       }
     }
 
+    // On iOS the numeric/decimal keypads have no minus key, so negative values
+    // can only be typed with the full "text" keyboard. Use it when the selector
+    // explicitly allows negatives (e.g. numeric_state triggers/conditions).
+    const allowsNegative =
+      this.selector.number?.min !== undefined && this.selector.number.min < 0;
+
     const translationKey = this.selector.number?.translation_key;
     let unit = this.selector.number?.unit_of_measurement;
     if (isBox && unit && this.localizeValue && translationKey) {
@@ -100,11 +106,13 @@ export class HaNumberSelector extends LitElement {
             : nothing
         }
         <ha-input
-          .inputMode=${
-            this.selector.number?.step === "any" ||
-            (this.selector.number?.step ?? 1) % 1 !== 0
-              ? "decimal"
-              : "numeric"
+          .inputmode=${
+            allowsNegative
+              ? "text"
+              : this.selector.number?.step === "any" ||
+                  (this.selector.number?.step ?? 1) % 1 !== 0
+                ? "decimal"
+                : "numeric"
           }
           .label=${!isBox ? undefined : this.label}
           .placeholder=${
