@@ -40,7 +40,7 @@ For loop example getting entity values in the weather domain:
   {{ state.name | lower }} is {{state.state_with_unit}}
 {%- endfor %}.`;
 
-@customElement("developer-tools-template")
+@customElement("tools-template")
 class HaPanelDevTemplate extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
 
@@ -632,6 +632,6 @@ ${
 
 declare global {
   interface HTMLElementTagNameMap {
-    "developer-tools-template": HaPanelDevTemplate;
+    "tools-template": HaPanelDevTemplate;
   }
 }
